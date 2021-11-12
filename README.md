@@ -2,6 +2,8 @@
 
 This repo contains a Murano (OpenStack) package for the Nectar research cloud. It allows you to set up a JupyterHub server (The Littlest JupyterHub distribution) easily from the dashboard.
 
+It uses a custom image that is created by https://github.com/ADACS-Australia/openstack-tljh.
+
 ## Build
 You can build the package with the makefile
 ```
