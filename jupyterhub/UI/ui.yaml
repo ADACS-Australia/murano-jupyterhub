@@ -60,6 +60,13 @@ Forms:
 
   - recordSetConfiguration:
       fields:
+        - name: title
+          type: string
+          required: false
+          hidden: true
+          description: >-
+            Details provided here will be used to automatically set up an HTTPS
+            certificate on your JupyterHub server, to enable secure connections.
         - name: unitNamingPattern
           type: string
           label: Host name
@@ -71,14 +78,13 @@ Forms:
             invalid: Just lowercase letters, numbers and hyphens are allowed.
           helpText: Just lowercase letters, numbers and hyphens are allowed.
           description: >-
-            Specify a string, that will be used in instance hostname and
-            DNS entry. Just letters, numbers and hyphens are allowed.
+            Specify a string, that will be used in the DNS entry.
+            Just letters, numbers and hyphens are allowed.
         - name: zone
           type: zone
           label: DNS zone
           description: >-
-            Select the DNS zone you'd like a DNS entry created in for you.
-            A HTTPS certificate will be provisioned for you automatically.
+            Select the DNS zone you'd like the entry to be created in.
           required: true
         - name: email
           type: string
