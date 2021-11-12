@@ -1,0 +1,20 @@
+FormatVersion: 2.0.0
+Version: 1.0.0
+Name: Certify
+
+Parameters:
+  domain: $domain
+  email: $email
+
+Body: |
+  return certify('\'{0}\' \'{1}\''.format(args.domain, args.email)).stdout
+
+Scripts:
+  certify:
+    Type: Application
+    Version: 1.0.0
+    EntryPoint: certify.sh
+    Files: []
+    Options:
+      captureStdout: true
+      captureStderr: true

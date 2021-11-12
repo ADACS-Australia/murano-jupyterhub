@@ -1,0 +1,21 @@
+FormatVersion: 2.0.0
+Version: 1.0.0
+Name: Signup
+
+Parameters:
+  password: $password
+  username: $username
+
+Body: |
+  return signup('\'{0}\' \'{1}\''.format(args.username, args.password.replace("'", ""))).stdout
+
+Scripts:
+  signup:
+    Type: Application
+    Version: 1.0.0
+    EntryPoint: signup.sh
+    Files:
+        - signup.py
+    Options:
+      captureStdout: true
+      captureStderr: true

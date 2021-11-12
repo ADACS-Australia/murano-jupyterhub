@@ -1,0 +1,77 @@
+Namespaces:
+  =: au.org.adacs
+  std: io.murano
+  res: io.murano.resources
+  sys: io.murano.system
+
+
+Name: TheLittlestJupyterHub
+
+Extends: std:Application
+
+Properties:
+  instance:
+    Contract: $.class(res:Instance).notNull()
+  recordSet:
+    Contract: $.class(res:RecordSet).notNull()
+  email:
+    Contract: $.string().notNull()
+  username:
+    Contract: $.string().notNull()
+  password:
+    Contract: $.string().notNull()
+
+Methods:
+  initialize:
+    Body:
+      - $._environment: $.find(std:Environment).require()
+
+  deploy:
+    Body:
+      - If: not $.getAttr(deployed, false)
+        Then:
+
+          # Launch instance with security groups
+          - $._environment.reporter.report($this, 'Creating instance...')
+          - $securityGroupIngress:
+            - ToPort: 80
+              FromPort: 80
+              IpProtocol: tcp
+              External: true
+            - ToPort: 443
+              FromPort: 443
+              IpProtocol: tcp
+              External: true
+          - $._environment.securityGroupManager.addGroupIngress($securityGroupIngress)
+          - $.instance.deploy()
+          - $resources: new(sys:Resources)
+
+          # Create DNS record
+          - $._environment.reporter.report($this, 'Setting up DNS record')
+          - $ipaddr: $.instance.ipAddresses.first()
+          - $.recordSet.create([$ipaddr])
+
+          # Create first admin user
+          - $template: $resources.yaml('signup.template').bind(dict(username => $.username, password => $.password))
+          - $._environment.reporter.report($this, 'Instance created. Creating admin user...')
+          - $.instance.agent.call($template, $resources, 600)
+
+          # Register HTTPS certificate
+          - $domain: format('{hostname}.{zone}', hostname=>$.recordSet.name, zone=>regex('[.]$').replace($.recordSet.zone, ''))
+          - $._environment.reporter.report($this, format('Certbot notifications email set to {email}', email=>$.email))
+          - $.enableHttpsCertbot($domain, $.email)
+
+          - $._environment.reporter.report($this, format('JupyterHub is available at https://{domain}', domain=>$domain))
+          - $.setAttr(deployed, true)
+
+  enableHttpsCertbot:
+    Arguments:
+      - domain:
+          Contract: $.string().notNull()
+      - email:
+          Contract: $.string().notNull()
+    Body:
+      - $resources: new(sys:Resources)
+      - $template: $resources.yaml('certify.template').bind(dict(domain=>$domain, email=>$email))
+      - $._environment.reporter.report($this, 'Setting up HTTPS certificate...')
+      - $.instance.agent.call($template, $resources, 600)

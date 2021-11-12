@@ -1,0 +1,11 @@
+Format: 1.0
+Type: Application
+FullName: au.org.adacs.TheLittlestJupyterHub
+Name: The Littlest JupyterHub
+Description: |
+  [v0.0.1]
+  A simple JupyterHub distribution for a small (0-100) number of users on a single server.
+Author: 'ADACS'
+Tags: [Server, WebServer, JupyterHub, Jupyter, Notebook, Python]
+Classes:
+  au.org.adacs.TheLittlestJupyterHub: TheLittlestJupyterHub.yaml
