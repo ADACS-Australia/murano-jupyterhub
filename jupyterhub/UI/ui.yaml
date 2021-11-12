@@ -13,7 +13,7 @@ Application:
     flavor: $.instanceConfiguration.flavor
     keyname: $.instanceConfiguration.keyPair
     availabilityZone: $.instanceConfiguration.availabilityZone
-    image: 1845ecca-a7c0-4171-a812-7ffe05f81e9a
+    image: "ADACS The Littlest JupyterHub (Ubuntu 20.04 LTS Focal)"
   recordSet:
     ?:
       type: io.murano.resources.RecordSet
