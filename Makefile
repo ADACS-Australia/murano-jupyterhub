@@ -1,14 +1,15 @@
 TARGET=jupyterhub
-.PHONY: $(TARGET).zip
+PKG=$(TARGET).zip
+.PHONY: $(PKG)
 
-build: update-image-id write-version $(TARGET).zip
+build: update-image-id write-version $(PKG)
 
 clean:
-	rm -rf $(TARGET).zip
+	rm -rf $(PKG)
 
 # Don't count on this... murano-pkg-check is very outdated, sadly
-check: $(TARGET).zip
-	murano-pkg-check --ignore W082,W100 $<
+check: build
+	murano-pkg-check --ignore W082,W100 $(PKG)
 
 IMAGE_NAME=ADACS The Littlest JupyterHub (Ubuntu 20.04 LTS Focal)
 update-image-id:
@@ -22,7 +23,7 @@ update-image-id:
     rm $(TARGET)/UI/ui.yaml.bak
 
 upload: check
-	murano package-import -c "Application Servers" --exists-action u $(TARGET).zip
+	murano package-import -c "Application Servers" --exists-action u $(PKG)
 
 write-version:
 	@version=$$(cat VERSION); \
@@ -30,5 +31,5 @@ write-version:
 	sed -i''".bak" "s/\[v.*\]/\[v$$version\]/g" $(TARGET)/manifest.yaml; \
 	rm $(TARGET)/manifest.yaml.bak
 
-$(TARGET).zip:
+$(PKG):
 	rm -f $@; cd $(TARGET); zip ../$@ -r *; cd ..
