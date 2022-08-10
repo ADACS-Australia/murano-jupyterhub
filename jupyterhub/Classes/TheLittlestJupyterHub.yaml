@@ -51,9 +51,14 @@ Methods:
           - $ipaddr: $.instance.ipAddresses.first()
           - $.recordSet.create([$ipaddr])
 
+          # Run volume setup for home dirs
+          - $template: $resources.yaml('volume.template')
+          - $._environment.reporter.report($this, 'Instance created. Checking for external volumes...')
+          - $.instance.agent.call($template, $resources, 600)
+
           # Create first admin user
           - $template: $resources.yaml('signup.template').bind(dict(username => $.username, password => $.password))
-          - $._environment.reporter.report($this, 'Instance created. Creating admin user...')
+          - $._environment.reporter.report($this, 'Creating admin user...')
           - $.instance.agent.call($template, $resources, 600)
 
           # Register HTTPS certificate

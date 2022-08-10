@@ -1,5 +1,12 @@
 Version: 2.4
 
+Templates:
+  customVolumeAttachment:
+    '/dev/vdb':
+      ?:
+        type: io.murano.resources.ExistingCinderVolume
+      openstackId: $.volumeConfiguration.volume
+
 Application:
   ?:
     type: au.org.adacs.TheLittlestJupyterHub
@@ -13,7 +20,8 @@ Application:
     flavor: $.instanceConfiguration.flavor
     keyname: $.instanceConfiguration.keyPair
     availabilityZone: $.instanceConfiguration.availabilityZone
-    image: 1845ecca-a7c0-4171-a812-7ffe05f81e9a
+    image: 38b8643c-1527-48d1-9de2-a453db3856e9
+    volumes: switch($.volumeConfiguration.volume, $=''=>null, $!=null=>$customVolumeAttachment)
   recordSet:
     ?:
       type: io.murano.resources.RecordSet
@@ -57,6 +65,25 @@ Forms:
             Select availability zone where the application would be created.
             If you plan to use a volume for your data, this will need match
             the Availability Zone of the volume.
+
+  - volumeConfiguration:
+      fields:
+        - name: title
+          type: string
+          required: false
+          hidden: true
+          description: >-
+            It is recommended that provide a volume for the data storage of
+            this application. If provided, all user data will be stored on
+            this volume and will persist even if the application is deleted.
+        - name: volume
+          type: volume
+          label: Existing Volume
+          description: >-
+            You can create a new volume from the Project > Volumes > Volumes
+            tab and must be created in the same Availablity Zone as your
+            application.
+          required: false
 
   - recordSetConfiguration:
       fields:

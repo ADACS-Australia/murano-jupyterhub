@@ -1,0 +1,16 @@
+FormatVersion: 2.0.0
+Version: 1.0.0
+Name: Volume
+
+Body: |
+  return volume().stdout
+
+Scripts:
+  volume:
+    Type: Application
+    Version: 1.0.0
+    EntryPoint: volume.sh
+    Files: []
+    Options:
+      captureStdout: true
+      captureStderr: true
