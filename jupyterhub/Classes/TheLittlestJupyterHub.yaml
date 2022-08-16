@@ -11,7 +11,7 @@ Extends: std:Application
 
 Properties:
   instance:
-    Contract: $.class(res::LinuxMuranoInstance).notNull()
+    Contract: $.class(res:LinuxMuranoInstance).notNull()
   recordSet:
     Contract: $.class(res:RecordSet).notNull()
   email:
