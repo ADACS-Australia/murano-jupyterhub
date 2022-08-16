@@ -66,24 +66,36 @@ Forms:
             If you plan to use a volume for your data, this will need match
             the Availability Zone of the volume.
 
-  - volumeConfiguration:
+  - userConfiguration:
       fields:
         - name: title
           type: string
           required: false
           hidden: true
           description: >-
-            It is recommended that provide a volume for the data storage of
-            this application. If provided, all user data will be stored on
-            this volume and will persist even if the application is deleted.
-        - name: volume
-          type: volume
-          label: Existing Volume
+            Details provided here will configure the first admin user account for
+            your JupyterHub.
+        - name: username
+          type: string
+          label: Username
+          initial: admin
+          regexpValidator: '^[a-z]([a-z0-9]*)?$'
+          errorMessages:
+            invalid: Only lowercase letters and numbers are allowed.
+          descriptionTitle: Username
           description: >-
-            You can create a new volume from the Project > Volumes > Volumes
-            tab and must be created in the same Availablity Zone as your
-            application.
-          required: false
+            Provide a username for the new user account to be created.
+            The username should be lowercase letters and numbers only, and must
+            start with a letter.
+        - name: password
+          type: password
+          label: Password
+          confirmInput: true
+          descriptionTitle: Password
+          description: >-
+            Provide password for the new user account.
+            It should be at least 7 characters, 1 capital letter,
+            1 digit and 1 specical char, except single quotes (').
 
   - recordSetConfiguration:
       fields:
@@ -123,37 +135,25 @@ Forms:
           descriptionTitle: Email address
           description: >-
             Provide an email address to use to register with Let's Encrypt
-            (letsencrypt.org) for your servers HTTPS certificate.
+            (letsencrypt.org) for your server's HTTPS certificate.
             You may receive an email when your certificate is due to expire.
           required: true
 
-  - userConfiguration:
+  - volumeConfiguration:
       fields:
         - name: title
           type: string
           required: false
           hidden: true
           description: >-
-            Details provided here will configure the first admin user account for
-            your JupyterHub.
-        - name: username
-          type: string
-          label: Username
-          initial: admin
-          regexpValidator: '^[a-z]([a-z0-9]*)?$'
-          errorMessages:
-            invalid: Only lowercase letters and numbers are allowed.
-          descriptionTitle: Username
+            It is recommended that provide a volume for the data storage of
+            this application. If provided, all user data will be stored on
+            this volume and will persist even if the application is deleted.
+        - name: volume
+          type: volume
+          label: Existing Volume
           description: >-
-            Provide a username for the new user account to be created.
-            The username should be lowercase letters and numbers only, and must
-            start with a letter.
-        - name: password
-          type: password
-          label: Password
-          confirmInput: true
-          descriptionTitle: Password
-          description: >-
-            Provide password for the new user account.
-            It should be at least 7 characters, 1 capital letter,
-            1 digit and 1 specical char, except single quotes (').
+            You can create a new volume from the Project > Volumes > Volumes
+            tab and must be created in the same Availablity Zone as your
+            application.
+          required: false
