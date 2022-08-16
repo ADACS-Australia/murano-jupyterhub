@@ -92,8 +92,9 @@ Forms:
           required: false
           hidden: true
           description: >-
-            Details provided here will be used to automatically set up an HTTPS
-            certificate on your JupyterHub server, to enable secure connections.
+            You JupyterHub server will be given a domain name (i.e. URL) based on
+            the DNS zone of your Nectar project. It will also be registered for an
+            HTTPS certificate to enable secure connections.
         - name: unitNamingPattern
           type: string
           label: Host name
@@ -105,7 +106,7 @@ Forms:
             invalid: Just lowercase letters, numbers and hyphens are allowed.
           helpText: Just lowercase letters, numbers and hyphens are allowed.
           description: >-
-            Specify a string, that will be used in the DNS entry.
+            Specify a string, that will be used as the prefix for your domain name.
             Just letters, numbers and hyphens are allowed.
         - name: zone
           type: zone
@@ -121,7 +122,9 @@ Forms:
             invalid: Must be a valid email address
           descriptionTitle: Email address
           description: >-
-            Provide an email address for HTTPS certificate notifications.
+            Provide an email address to use to register with Let's Encrypt
+            (letsencrypt.org) for your servers HTTPS certificate.
+            You may receive an email when your certificate is due to expire.
           required: true
 
   - userConfiguration:
@@ -136,6 +139,7 @@ Forms:
         - name: username
           type: string
           label: Username
+          initial: admin
           regexpValidator: '^[a-z]([a-z0-9]*)?$'
           errorMessages:
             invalid: Only lowercase letters and numbers are allowed.
@@ -147,6 +151,7 @@ Forms:
         - name: password
           type: password
           label: Password
+          confirmInput: true
           descriptionTitle: Password
           description: >-
             Provide password for the new user account.
