@@ -53,11 +53,6 @@ Methods:
           - $.recordSet.create([$ipaddr])
           - $._environment.reporter.report($this, 'Successfully created DNS record.')
 
-          # Register HTTPS certificate
-          - $domain: format('{hostname}.{zone}', hostname=>$.recordSet.name, zone=>regex('[.]$').replace($.recordSet.zone, ''))
-          - $._environment.reporter.report($this, format('Certbot notifications email set to {email}', email=>$.email))
-          - $.enableHttpsCertbot($domain, $.email)
-
           - If: $.instance.volumes
             Then: # Run volume setup for home dirs
               - $template: $resources.yaml('volume.template')
@@ -69,6 +64,11 @@ Methods:
           - $template: $resources.yaml('signup.template').bind(dict(username => $.username, password => $.password))
           - $._environment.reporter.report($this, 'Creating admin user...')
           - $.instance.agent.call($template, $resources, 600)
+
+          # Register HTTPS certificate
+          - $domain: format('{hostname}.{zone}', hostname=>$.recordSet.name, zone=>regex('[.]$').replace($.recordSet.zone, ''))
+          - $._environment.reporter.report($this, format('Certbot notifications email set to {email}', email=>$.email))
+          - $.enableHttpsCertbot($domain, $.email)
 
           - $._environment.reporter.report($this, format('JupyterHub is available at https://{domain}', domain=>$domain))
           - $.setAttr(deployed, true)
@@ -84,3 +84,4 @@ Methods:
       - $template: $resources.yaml('certify.template').bind(dict(domain=>$domain, email=>$email))
       - $._environment.reporter.report($this, 'Setting up HTTPS certificate...')
       - $.instance.agent.call($template, $resources, 600)
+      - $._environment.reporter.report($this, 'Certificate registered.')

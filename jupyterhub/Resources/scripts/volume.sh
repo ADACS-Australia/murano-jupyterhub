@@ -14,7 +14,7 @@ MOUNTPOINT=$(lsblk -n $DISK -o MOUNTPOINT)
 if [ ! -z $DISK ] && [ -z $MOUNTPOINT ]; then
 
   # Have external mount for /home
-  MOUNT="/home"
+  MOUNT="/mnt"
 
   # Partition label
   if [ "$(lsblk -n -o PARTTYPE $DISK)" == "" ]; then
@@ -40,5 +40,13 @@ if [ ! -z $DISK ] && [ -z $MOUNTPOINT ]; then
     echo "${DISK}1 $MOUNT ext4 defaults 0 2" >> /etc/fstab
     mount $MOUNT
   fi
+
+  mkdir -p $MOUNT/home /home
+  mount --bind $MOUNT/home /home
+
+  mkdir -p $MOUNT/shared /srv/data/shared
+  mount --bind $MOUNT/shared /srv/data/shared
+  chgrp jupyterhub-admins /srv/data/shared
+  chmod g+w /srv/data/shared
 
 fi
