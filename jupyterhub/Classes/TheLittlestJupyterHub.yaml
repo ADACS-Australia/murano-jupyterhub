@@ -11,7 +11,7 @@ Extends: std:Application
 
 Properties:
   instance:
-    Contract: $.class(res:Instance).notNull()
+    Contract: $.class(res::LinuxMuranoInstance).notNull()
   recordSet:
     Contract: $.class(res:RecordSet).notNull()
   email:
@@ -45,16 +45,20 @@ Methods:
           - $._environment.securityGroupManager.addGroupIngress($securityGroupIngress)
           - $.instance.deploy()
           - $resources: new(sys:Resources)
+          - $._environment.reporter.report($this, 'Instance created.')
 
           # Create DNS record
           - $._environment.reporter.report($this, 'Setting up DNS record')
           - $ipaddr: $.instance.ipAddresses.first()
           - $.recordSet.create([$ipaddr])
+          - $._environment.reporter.report($this, 'Successfully created DNS record.')
 
-          # Run volume setup for home dirs
-          - $template: $resources.yaml('volume.template')
-          - $._environment.reporter.report($this, 'Instance created. Checking for external volumes...')
-          - $.instance.agent.call($template, $resources, 600)
+          - If: $.instance.volumes
+            Then: # Run volume setup for home dirs
+              - $template: $resources.yaml('volume.template')
+              - $._environment.reporter.report($this, 'Mounting external volume ...')
+              - $.instance.agent.call($template, $resources, 600)
+              - $._environment.reporter.report($this, 'Successfully mounted external volume.')
 
           # Create first admin user
           - $template: $resources.yaml('signup.template').bind(dict(username => $.username, password => $.password))
