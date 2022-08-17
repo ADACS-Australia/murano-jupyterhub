@@ -17,8 +17,8 @@ make upload
 ```
 
 ## Manual upload
-Each release contains a `zip` file that can be uploaded to your Nectar/OpenStack account. You can upload directly using the URL.
+Each release contains a `zip` file that can be uploaded to your Nectar/OpenStack account. You can upload the latest release directly using the URL: https://github.com/ADACS-Australia/murano-jupyterhub/releases/latest/download/jupyterhub.zip
 
-Go to the releases for this repo. Select the latest release. Under assests, right click on `jupyterhub.zip` and then copy the link address.
+Alternatively, go to the releases for this repo, and select your preferred release. Under assests, right click on `jupyterhub.zip` and then copy the link address.
 
 On you Nectar/OpenStack account, navigate to `Applications > Manage > Packages`. Then press `+ Import Package` and choose URL as the Package Source. Use the link address you copied from the release page.
