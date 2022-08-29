@@ -13,9 +13,6 @@ MOUNTPOINT=$(lsblk -n $DISK -o MOUNTPOINT)
 # our external volume for home
 if [ ! -z $DISK ] && [ -z $MOUNTPOINT ]; then
 
-  # Have external mount for /home
-  MOUNT="/mnt"
-
   # Partition label
   if [ "$(lsblk -n -o PARTTYPE $DISK)" == "" ]; then
     parted $DISK mklabel msdos
@@ -34,19 +31,31 @@ if [ ! -z $DISK ] && [ -z $MOUNTPOINT ]; then
   # Move home for 'ubuntu' user
   usermod --home /home.orig --move-home $ORIGUSER
 
+  # Have external mount for /home
+  MOUNT="/mnt"
+
   # Mount volume
-  if ! mount | grep -q $MOUNT; then
+  if ! mount | grep -q $MOUNT ; then
     mkdir -p $MOUNT
     echo "${DISK}1 $MOUNT ext4 defaults 0 2" >> /etc/fstab
     mount $MOUNT
   fi
 
-  mkdir -p $MOUNT/home /home
-  mount --bind $MOUNT/home /home
+  # Create bind mount from /mnt/home to /home
+  if ! mount | grep -q /home ; then
+    mkdir -p $MOUNT/home /home
+    echo "$MOUNT/home /home none defaults,bind 0 0" >> /etc/fstab
+    mount /home
+  fi
 
-  mkdir -p $MOUNT/shared /srv/data/shared
-  mount --bind $MOUNT/shared /srv/data/shared
-  chgrp jupyterhub-admins /srv/data/shared
-  chmod g+w /srv/data/shared
+  # Create bind mount from /mnt/shared to /srv/data/shared
+  if ! mount | grep -q /srv/data/shared ; then
+    mkdir -p $MOUNT/shared /srv/data/shared
+    echo "$MOUNT/shared /srv/data/shared none defaults,bind 0 0" >> /etc/fstab
+    mount /srv/data/shared
+    # Change permissions
+    chgrp jupyterhub-admins /srv/data/shared
+    chmod g+w /srv/data/shared
+  fi
 
 fi
