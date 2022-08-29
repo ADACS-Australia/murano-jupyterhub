@@ -1,0 +1,18 @@
+FormatVersion: 2.0.0
+Version: 1.0.0
+Name: Install
+
+Parameters:
+
+Body: |
+  return install().stdout
+
+Scripts:
+  install:
+    Type: Application
+    Version: 1.0.0
+    EntryPoint: install.sh
+    Files: []
+    Options:
+      captureStdout: true
+      captureStderr: true

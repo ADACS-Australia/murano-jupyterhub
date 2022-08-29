@@ -20,7 +20,7 @@ Application:
     flavor: $.instanceConfiguration.flavor
     keyname: $.instanceConfiguration.keyPair
     availabilityZone: $.instanceConfiguration.availabilityZone
-    image: "ADACS The Littlest JupyterHub (Ubuntu 20.04 LTS Focal)"
+    image: "NeCTAR Ubuntu 20.04 LTS (Focal) amd64"
     volumes: switch($.volumeConfiguration.volume, $=''=>null, $!=null=>$customVolumeAttachment)
   recordSet:
     ?:
