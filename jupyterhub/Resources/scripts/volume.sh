@@ -33,11 +33,12 @@ if [ ! -z $DISK ] && [ -z $MOUNTPOINT ]; then
 
   # Have external mount for /home
   MOUNT="/mnt"
+  QUOTA_OPTS="errors=remount-ro,usrjquota=aquota.user,grpjquota=aquota.group,jqfmt=vfsv0"
 
   # Mount volume
   if ! mount | grep -q $MOUNT ; then
     mkdir -p $MOUNT
-    echo "${DISK}1 $MOUNT ext4 defaults 0 2" >> /etc/fstab
+    echo "${DISK}1 $MOUNT ext4 defaults,${QUOTA_OPTS} 0 2" >> /etc/fstab
     mount $MOUNT
   fi
 
