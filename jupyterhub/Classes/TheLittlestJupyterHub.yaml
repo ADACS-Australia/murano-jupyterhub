@@ -55,7 +55,7 @@ Methods:
 
           # Install TLJH
           - $template: $resources.yaml('install.template')
-          - $._environment.reporter.report($this, 'Installing TLJH. This may take ~10 mins...')
+          - $._environment.reporter.report($this, 'Installing TLJH. This may take ~15 mins...')
           - $.instance.agent.call($template, $resources, 1200)
           - $._environment.reporter.report($this, 'Successfully installed The Littlest JupyterHub.')
 
