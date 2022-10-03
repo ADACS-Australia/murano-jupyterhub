@@ -7,8 +7,12 @@ argparser.add_argument('username')
 argparser.add_argument('password')
 args = argparser.parse_args()
 
-api_url = 'http://localhost/hub/signup'
-data = {'username':args.username, 'pw':args.password}
+api_url = 'http://127.0.0.1:80/hub/signup'
+data = dict(
+  username = args.username,
+  signup_password = args.password,
+  signup_password_confirmation = args.password,
+)
 
 r = requests.post(api_url, data = data)
 r.raise_for_status()
@@ -19,5 +23,5 @@ s = BeautifulSoup(r.text, 'html.parser')
 error = s.find(class_='alert alert-danger')
 
 if error:
-  msg = ' '.join(error.contents)
+  msg = ' '.join([str(item) for item in error.contents])
   raise RuntimeError(msg)
