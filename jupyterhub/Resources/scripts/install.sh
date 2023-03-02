@@ -2,7 +2,10 @@
 
 # Script to install and set up The Littlest JupyterHub
 
-apt-get remove -y unattended-upgrades
+while ! apt-get remove -y unattended-upgrades; do sleep 1; done
+apt-get purge -y unattended-upgrades
+systemctl stop unattended-upgrades || true
+systemctl disable unattended-upgrades || true
 apt-get update -y
 apt-get install -y ansible
 

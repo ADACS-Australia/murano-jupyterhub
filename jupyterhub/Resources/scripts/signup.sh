@@ -19,5 +19,6 @@ PASSWORD="$2"
 python3 signup.py "$USERNAME" "$PASSWORD"
 
 # Nuke the password from the murano log file
-sed -i "s/$PASSWORD/******/g" /var/log/murano-agent.log
+sed -i "s/$PASSWORD/******/g" /var/log/murano-agent.log || true
+sed -i "s/$PASSWORD/******/g" /var/log/murano-agent/muranoagent.log || true
 set -x
