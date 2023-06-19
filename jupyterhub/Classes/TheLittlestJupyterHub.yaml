@@ -55,9 +55,9 @@ Methods:
 
           # Update machine
           - $template: $resources.yaml('update.template')
-          - $._environment.reporter.report($this, 'Running OS updates. This may take a while...')
+          - $._environment.reporter.report($this, 'Running updates...')
           - $.instance.agent.call($template, $resources, 1800)
-          - $._environment.reporter.report($this, 'Successfully updated server.')
+          - $._environment.reporter.report($this, 'Successfully updated.')
 
           # Install TLJH
           - $template: $resources.yaml('install.template')
@@ -74,7 +74,7 @@ Methods:
 
           # Create first admin user
           - $template: $resources.yaml('signup.template').bind(dict(username => $.username, password => $.password))
-          - $._environment.reporter.report($this, 'Creating admin user...')
+          - $._environment.reporter.report($this, format('Creating admin user "{admin_user}"...', admin_user=>$.username))
           - $.instance.agent.call($template, $resources, 600)
 
           # Register HTTPS certificate
