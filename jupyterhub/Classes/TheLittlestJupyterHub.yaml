@@ -53,10 +53,16 @@ Methods:
           - $.recordSet.create([$ipaddr])
           - $._environment.reporter.report($this, 'Successfully created DNS record.')
 
+          # Update machine
+          - $template: $resources.yaml('update.template')
+          - $._environment.reporter.report($this, 'Running OS updates. This may take a while...')
+          - $.instance.agent.call($template, $resources, 1800)
+          - $._environment.reporter.report($this, 'Successfully updated server.')
+
           # Install TLJH
           - $template: $resources.yaml('install.template')
           - $._environment.reporter.report($this, 'Installing TLJH. This may take ~15 mins...')
-          - $.instance.agent.call($template, $resources, 1200)
+          - $.instance.agent.call($template, $resources, 1800)
           - $._environment.reporter.report($this, 'Successfully installed The Littlest JupyterHub.')
 
           - If: $.instance.volumes

@@ -1,0 +1,18 @@
+FormatVersion: 2.0.0
+Version: 1.0.0
+Name: Update
+
+Parameters:
+
+Body: |
+  return update().stdout
+
+Scripts:
+  update:
+    Type: Application
+    Version: 1.0.0
+    EntryPoint: update.sh
+    Files: []
+    Options:
+      captureStdout: true
+      captureStderr: true
