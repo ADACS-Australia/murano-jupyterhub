@@ -9,10 +9,5 @@ export HOME="/root"
 
 apt-get install -y ansible
 
-url="https://api.github.com/repos/ADACS-Australia/openstack-tljh/releases/latest"
-location=$(curl -s "$url" | grep tarball_url | awk '{ print $2 }' | sed 's/,$//' | sed 's/"//g' )
-fname="openstack-tljh.tar.gz"
-wget "$location" -O "$fname"
-tar -xvzf "$fname"
-
-ansible-playbook -vv -c local -i localhost, ADACS-Australia-openstack-tljh*/playbook.yml
+git clone --depth=1 https://github.com/ADACS-Australia/openstack-tljh.git
+ansible-playbook -vv -c local -i localhost, openstack-tljh/playbook.yml
