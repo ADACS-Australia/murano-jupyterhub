@@ -1,5 +1,7 @@
-#!/bin/bash -xeu
+#!/bin/bash
 # Script to install and set up The Littlest JupyterHub
+
+set -xeu
 
 # Undefined since this is all being run inside the murano-agent systemd service.
 # Needs to be defined for mambaforge install script to not halt.
