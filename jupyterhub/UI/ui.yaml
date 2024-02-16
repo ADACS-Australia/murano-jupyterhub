@@ -20,8 +20,8 @@ Application:
     flavor: $.instanceConfiguration.flavor
     keyname: $.instanceConfiguration.keyPair
     availabilityZone: $.instanceConfiguration.availabilityZone
-    # "NeCTAR Ubuntu 20.04 LTS (Focal) amd64 [2023-03-02]"
-    image: 08158d7c-979a-41b9-baea-b5d7ce59dc64
+    # "NeCTAR Ubuntu 22.04 LTS (Jammy) amd64 [Created Dec 15, 2023]"
+    image: f3f2983a-3159-441a-ac9d-02aa7a9b39be
     volumes: switch($.volumeConfiguration.volume, $=''=>null, $!=null=>$customVolumeAttachment)
   recordSet:
     ?:
