@@ -10,4 +10,4 @@ export HOME="/root"
 apt-get install -y ansible
 
 git clone --depth=1 https://github.com/ADACS-Australia/openstack-tljh.git
-ansible-playbook -vv -c local -i localhost, openstack-tljh/playbook.yml
+ansible-playbook -vv -c local -i localhost, -e "tljh_version=1.0.0" openstack-tljh/playbook.yml
