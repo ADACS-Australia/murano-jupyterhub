@@ -8,13 +8,18 @@ argparser.add_argument('password')
 args = argparser.parse_args()
 
 api_url = 'http://127.0.0.1:80/hub/signup'
+
+s = requests.session()
+s.get(api_url)
+
 data = dict(
   username = args.username,
   signup_password = args.password,
   signup_password_confirmation = args.password,
+  _xsrf = s.cookies['_xsrf']
 )
 
-r = requests.post(api_url, data = data)
+r = s.post(api_url, data = data)
 r.raise_for_status()
 
 # Need to capture the error message from the HTTP response,
