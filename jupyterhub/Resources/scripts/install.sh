@@ -9,10 +9,10 @@ export HOME="/root"
 
 apt-get install -y ansible
 
-url="https://api.github.com/repos/ADACS-Australia/openstack-tljh/releases/latest"
+url="https://api.github.com/repos/ADACS-Australia/ansible-jupyterhub/releases/latest"
 location=$(curl -s "$url" | grep tarball_url | awk '{ print $2 }' | sed 's/,$//' | sed 's/"//g' )
-fname="openstack-tljh.tar.gz"
+fname="ansible-jupyterhub.tar.gz"
 wget "$location" -O "$fname"
 tar -xvzf "$fname"
 
-ansible-playbook -vv -c local -i localhost, -e "tljh_version=1.0.0 ansible_user=ubuntu" ADACS-Australia-openstack-tljh*/playbook.yml
+ansible-playbook -vv -c local -i localhost, -e "tljh_version=1.0.0 ansible_user=ubuntu" ADACS-Australia-ansible-jupyterhub*/playbook.yml

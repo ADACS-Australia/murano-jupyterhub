@@ -15,7 +15,7 @@ Type: Application
 FullName: au.org.adacs.TheLittlestJupyterHub
 Name: The Littlest JupyterHub
 Description: |
-  [v0.3.0]
+  [v0.3.1]
   A simple JupyterHub distribution for a small (0-100) number of users on a single server.
   Ubuntu 22.04 LTS (Jammy) with TLJH version 1.0.0.
   An existing volume ID can be provided for storage of all user data, which
